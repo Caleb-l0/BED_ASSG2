@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sign Up</title>
+  <title>Login</title>
   <style>
     body {
   font-family: sans-serif;
@@ -66,25 +66,23 @@ button:hover {
 </head>
 <body>
   <div class="box">
-    <h2>Sign Up</h2>
-    <form onsubmit="signup(event)">
-      <input type="text" id="name" placeholder="Name" required>
+    <h2>Login</h2>
+    <form onsubmit="login(event)">
       <input type="email" id="email" placeholder="Email" required>
       <input type="password" id="password" placeholder="Password" required>
-      <button type="submit">Sign Up</button>
+      <button type="submit">Login</button>
     </form>
     <div class="link">
-      Already have an account? <a href="login.html">Login</a>
+      Don't have an account? <a href="signup.html">Sign Up</a>
     </div>
   </div>
 
   <script>
-    function signup(e) {
+    function login(e) {
       e.preventDefault();
-      const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      alert(`Signing up with\nName: ${name}\nEmail: ${email}`);
+      alert(`Logging in with\nEmail: ${email}`);
       // Add backend/API logic here
     }
   </script>
