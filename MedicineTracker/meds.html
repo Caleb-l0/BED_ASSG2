@@ -1,9 +1,117 @@
 <!DOCTYPE html>
-<header>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Medication Reminder Calendar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
 
+    h1, h2 {
+      text-align: center;
+    }
 
-</header>
+    #calendar-controls {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    #calendar-controls button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 0 10px;
+    }
+
+    #month-year {
+      font-size: 24px;
+      padding: 10px;
+    }
+
+    #calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .day {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      min-height: 100px;
+      font-size: 16px;
+    }
+
+    .med-entry {
+      margin-top: 5px;
+      background-color: #e0f7fa;
+      padding: 5px;
+      border-radius: 4px;
+    }
+
+    form {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    form input, form button {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    #calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;          
+  margin-bottom: 10px; 
+}
+
+#calendar-header > div {
+  text-align: center;
+  font-weight: bold;
+}
+
+  </style>
+</head>
 <body>
 
-    
+  <h1>Medication Reminder Calendar</h1>
+
+  <div id="calendar-controls">
+    <button id="prev-month">← Previous</button>
+    <span id="month-year"></span>
+    <button id="next-month">Next →</button>
+  </div>
+
+  <div id="calendar-header">
+  <div>Sunday</div>
+  <div>Monday</div>
+  <div>Tuesday</div>
+  <div>Wednesday</div>
+  <div>Thursday</div>
+  <div>Friday</div>
+  <div>Saturday</div>
+</div>
+
+  <div id="calendar"></div>
+
+  <h2>Add Medication Reminder</h2>
+  <form id="med-form">
+    <input type="text" id="med-name" placeholder="Medicine name (e.g., Aspirin)" required />
+    <input type="datetime-local" id="med-datetime" required />
+    <button type="submit">Add Reminder</button>
+  </form>
+
+  <script src="meds.js"></script>
 </body>
+</html>
