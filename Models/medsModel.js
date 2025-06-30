@@ -44,3 +44,8 @@ async function CreateDate(){
     }
 
 }
+
+module.exports = {
+    GetAllDates,
+    CreateDate,
+}
