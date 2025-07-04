@@ -26,11 +26,15 @@ const medSchema = Joi.object({
     next()
  }
 
- function ValidateDateID(res,req,next){
+function ValidateDateID(res,req,next){
     const id = parseInt(req.params.id)
-    
+    if (isNaN(id) || id <= 0) {
+        return res.status(400).json({ error: "Invalid medication ID. Must be a positive number." });
+        }
+    next();
+}
 
- }
+ 
 
 
  module.exports = 
