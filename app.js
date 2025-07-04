@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-const medsRoutes = require('./routes/medsRoutes');
+const medsController = require("./Controllers/medsController");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,7 +16,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/meds', medsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
@@ -24,6 +23,13 @@ app.listen(PORT, () => {
 
 
 //ROUTES//
+
+//Medicine routes//
+app.get("/api/meds", medsController.getAllDates);
+app.get("/api/meds/:id", ValidateDateID, medsController.getDateById);
+app.post("/api/meds", ValidateDate, medsController.createDate);
+app.put("/api/meds/:id", ValidateDateID, ValidateDate, medsController.updateDate);
+app.delete("/api/meds/:id", ValidateDateID, medsController.deleteDate);
 
 
 //Start + Shutdown server//
