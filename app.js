@@ -5,7 +5,7 @@ const sql = require('mssql');
 require('dotenv').config();
 
 const medsController = require("./Controllers/medsController");
-const { validateDate, validateDateID } = require("./Validations/medsValidation");
+const { validateDate, validateDateID } = require("./Middlewares/medsValidation");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
