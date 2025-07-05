@@ -66,12 +66,19 @@ async function CreateDate(bookData) {
     request.input("datetime", sql.DateTime, bookData.datetime);
     await request.query(query);
   } catch (error) {
-    console.error("Database error (create):", error);
+    console.error("CreateDate error:", error);
     throw error;
   } finally {
-    if (connection) await connection.close();
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing connection:", err);
+      }
+    }
   }
 }
+
 
 async function updateDate(id, { medicine, datetime }) {
   let connection;
