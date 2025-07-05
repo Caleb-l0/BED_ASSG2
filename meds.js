@@ -4,23 +4,39 @@ const prevBtn = document.getElementById('prev-month');
 const nextBtn = document.getElementById('next-month');
 const medForm = document.getElementById('med-form');
 
+const modal = document.getElementById('modal');
+const editForm = document.getElementById('edit-form');
+const deleteBtn = document.getElementById('delete-btn');
+const cancelBtn = document.getElementById('cancel-btn');
+
 let currentDate = new Date();
-let meds = {}; // { 'YYYY-MM-DD': [ { id, name, time } ] }
+let allMeds = []; // Full DB records
+let selectedMedId = null;
 
 function getDateKey(date) {
   return date.toISOString().split('T')[0];
 }
 
+function formatDateTimeLocal(datetime) {
+  const dt = new Date(datetime);
+  return dt.toISOString().slice(0, 16); // YYYY-MM-DDTHH:mm
+}
+
+async function fetchMedsFromAPI() {
+  const res = await fetch("/api/meds");
+  const data = await res.json();
+  allMeds = data;
+  renderCalendar();
+}
+
 function renderCalendar() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
-
   const firstDay = new Date(year, month, 1);
   const startDay = firstDay.getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
   monthYearEl.textContent = firstDay.toLocaleString('default', { month: 'long', year: 'numeric' });
-
   calendarEl.innerHTML = '';
 
   for (let i = 0; i < startDay; i++) {
@@ -32,32 +48,19 @@ function renderCalendar() {
   for (let day = 1; day <= daysInMonth; day++) {
     const date = new Date(year, month, day);
     const dateKey = getDateKey(date);
-
     const dayEl = document.createElement('div');
     dayEl.className = 'day';
     dayEl.innerHTML = `<strong>${day}</strong>`;
 
-    if (meds[dateKey]) {
-      meds[dateKey].forEach(entry => {
-        const div = document.createElement('div');
-        div.className = 'med-entry';
-        div.innerHTML = `
-          ${entry.name} @ ${entry.time}
-          <button class="delete-btn" title="Delete reminder">🗑️</button>
-        `;
-
-        const deleteBtn = div.querySelector('.delete-btn');
-        deleteBtn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          if (confirm(`Delete "${entry.name}" scheduled at ${entry.time}?`)) {
-            await fetch(`/api/meds/${entry.id}`, { method: 'DELETE' });
-            await fetchMedsFromBackend();
-          }
-        });
-
-        dayEl.appendChild(div);
-      });
-    }
+    const medsForDay = allMeds.filter(med => getDateKey(new Date(med.datetime)) === dateKey);
+    medsForDay.forEach(med => {
+      const div = document.createElement('div');
+      div.className = 'med-entry';
+      const time = new Date(med.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      div.textContent = `${med.medicine} @ ${time}`;
+      div.onclick = () => openEditModal(med);
+      dayEl.appendChild(div);
+    });
 
     calendarEl.appendChild(dayEl);
   }
@@ -68,16 +71,14 @@ medForm.addEventListener('submit', async (e) => {
   const name = document.getElementById('med-name').value;
   const datetime = document.getElementById('med-datetime').value;
 
-  if (!name || !datetime) return;
-
-  await fetch('/api/meds', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  await fetch("/api/meds", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ medicine: name, datetime })
   });
 
   medForm.reset();
-  await fetchMedsFromBackend();
+  await fetchMedsFromAPI();
 });
 
 prevBtn.addEventListener('click', () => {
@@ -90,32 +91,41 @@ nextBtn.addEventListener('click', () => {
   renderCalendar();
 });
 
-async function fetchMedsFromBackend() {
-  const res = await fetch('/api/meds');
-  const data = await res.json();
-  console.log("Fetched meds:", data); // Optional for debugging
-
-  meds = {}; // Reset
-
-  data.forEach(med => {
-    const dateKey = med.datetime.split('T')[0];
-    const time = new Date(med.datetime).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-
-    if (!meds[dateKey]) meds[dateKey] = [];
-
-    meds[dateKey].push({
-      id: med.id,
-      name: med.medicine,
-      time,
-      rawTime: med.datetime
-    });
-  });
-
-  renderCalendar();
+function openEditModal(med) {
+  selectedMedId = med.id;
+  document.getElementById('edit-name').value = med.medicine;
+  document.getElementById('edit-datetime').value = formatDateTimeLocal(med.datetime);
+  modal.classList.remove('hidden');
 }
 
-// Load initial data
-fetchMedsFromBackend();
+editForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const updatedName = document.getElementById('edit-name').value;
+  const updatedDatetime = document.getElementById('edit-datetime').value;
+
+  await fetch(`/api/meds/${selectedMedId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ medicine: updatedName, datetime: updatedDatetime })
+  });
+
+  modal.classList.add('hidden');
+  await fetchMedsFromAPI();
+});
+
+deleteBtn.addEventListener('click', async () => {
+  if (confirm("Are you sure you want to delete this reminder?")) {
+    await fetch(`/api/meds/${selectedMedId}`, {
+      method: "DELETE"
+    });
+
+    modal.classList.add('hidden');
+    await fetchMedsFromAPI();
+  }
+});
+
+cancelBtn.addEventListener('click', () => {
+  modal.classList.add('hidden');
+});
+
+fetchMedsFromAPI();
