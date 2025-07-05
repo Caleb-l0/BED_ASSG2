@@ -34,7 +34,7 @@ async function updateDate(req, res) {
   try {
     const id = parseInt(req.params.id, 10);
     const { medicine, datetime } = req.body;
-    await medsModel.UpdateDateById(id, { medicine, datetime });
+    await medsModel.updateDate(id, { medicine, datetime }); 
     res.status(200).json({ message: "Reminder updated" });
   } catch (error) {
     res.status(500).json({ error: "Failed to update reminder" });
@@ -44,7 +44,7 @@ async function updateDate(req, res) {
 async function deleteDate(req, res) {
   try {
     const id = parseInt(req.params.id, 10);
-    await medsModel.DeleteDateById(id);
+    await medsModel.deleteDate(id);
     res.status(200).json({ message: "Reminder deleted" });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete reminder" });

@@ -1,4 +1,4 @@
-// medsValidation.js
+
 const Joi = require("joi");
 
 const medSchema = Joi.object({

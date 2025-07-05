@@ -56,20 +56,21 @@ async function getDateById(id) {
 }
 
 //CREATE//
-async function CreateDate(){
-    let connection;
-    try{
-        connection = await sql.connect(dbConfig)
-        const query = "INSERT INTO Medicine";
-        const request = connection.request();
-        request.input("medicine", bookData.medicine);
-        request.input("datetime", bookData.datetime);
-        const result = await request.query(query);
-    }
-    catch{
-
-    }
-
+async function CreateDate(bookData) {
+  let connection;
+  try {
+    connection = await sql.connect(dbConfig);
+    const query = "INSERT INTO Medicine (medicine, datetime) VALUES (@medicine, @datetime)";
+    const request = connection.request();
+    request.input("medicine", sql.VarChar, bookData.medicine);
+    request.input("datetime", sql.DateTime, bookData.datetime);
+    await request.query(query);
+  } catch (error) {
+    console.error("Database error (create):", error);
+    throw error;
+  } finally {
+    if (connection) await connection.close();
+  }
 }
 
 async function updateDate(id, { medicine, datetime }) {
