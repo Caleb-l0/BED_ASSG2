@@ -5,8 +5,8 @@ const sql = require('mssql');
 require('dotenv').config();
 
 //Import Validation//
-const validateSignup = require('./Validations/signupValidation');
-const validateLogin = require('./Validations/loginValidation');
+const validateSignup = require('./Middlewares/signupValidation');
+const validateLogin = require('./Middlewares/loginValidation');
 
 
 //Import Controller//
