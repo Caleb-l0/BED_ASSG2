@@ -18,7 +18,7 @@ async function loginUser(req, res) {
 
     const token = jwt.sign(
       { userId: user.id, email: user.email },
-      process.env.JWT_SECRET || "mysecretkey",
+      process.env.JWT_SECRET || "secretkey",
       
     );
 

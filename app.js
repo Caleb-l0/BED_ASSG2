@@ -5,13 +5,14 @@ const sql = require('mssql');
 require('dotenv').config();
 
 //Import Validation//
-const validateSignup = require('./Middlewares/signupValidation');
-const validateLogin = require('./Middlewares/loginValidation');
+const {validateSignup} = require('./Middlewares/signupValidation');
+const {validateLogin} = require('./Middlewares/loginValidation');
 
 
 //Import Controller//
 const { loginUser } = require('./Controllers/loginController');
-const { registerUser } = require('./Controllers/signupController');
+const { signupUser } = require('./Controllers/signupController');
+
 const medsController = require("./Controllers/medsController");
 const { validateDate, validateDateID } = require("./Middlewares/medsValidation");
 
@@ -28,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 //Signup/Login//
 app.post('/login', validateLogin, loginUser);
-app.post('/signup', validateSignup, registerUser);
+app.post('/signup', validateSignup, signupUser);
 
 //Medicine//
 app.get("/api/meds", medsController.getAllDates);
