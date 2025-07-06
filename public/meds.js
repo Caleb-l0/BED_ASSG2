@@ -10,7 +10,7 @@ const deleteBtn = document.getElementById('delete-btn');
 const cancelBtn = document.getElementById('cancel-btn');
 
 let currentDate = new Date();
-let allMeds = []; // Full DB records
+let allMeds = []; 
 let selectedMedId = null;
 
 function getDateKey(date) {
@@ -95,7 +95,7 @@ function openEditModal(med) {
   selectedMedId = med.id;
   document.getElementById('edit-name').value = med.medicine;
   document.getElementById('edit-datetime').value = formatDateTimeLocal(med.datetime);
-  modal.classList.remove('hidden');
+  modal.classList.add('visible');
 }
 
 editForm.addEventListener('submit', async (e) => {
@@ -109,7 +109,7 @@ editForm.addEventListener('submit', async (e) => {
     body: JSON.stringify({ medicine: updatedName, datetime: updatedDatetime })
   });
 
-  modal.classList.add('hidden');
+  modal.classList.remove('visible');
   await fetchMedsFromAPI();
 });
 

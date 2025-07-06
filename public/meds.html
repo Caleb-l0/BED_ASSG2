@@ -87,6 +87,24 @@
       padding: 10px;
       font-size: 16px;
     }
+    #modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: 300px;
+  display: none; 
+}
+
+#modal.visible {
+  display: block; 
+}
+    .hidden {
+    display: none;
+  }
   </style>
 </head>
 <body>
@@ -117,6 +135,20 @@
     <input type="datetime-local" id="med-datetime" required />
     <button type="submit">Add Reminder</button>
   </form>
+
+  <div id="modal">
+  <form id="edit-form">
+    <label>Medicine Name:</label><br>
+    <input type="text" id="edit-name" required /><br><br>
+
+    <label>Date & Time:</label><br>
+    <input type="datetime-local" id="edit-datetime" required /><br><br>
+
+    <button type="submit">Save</button>
+    <button type="button" id="delete-btn" style="color: red; margin-left: 10px;">Delete</button>
+    <button type="button" id="cancel-btn" style="margin-left: 10px;">Cancel</button>
+  </form>
+</div>
 
   <script src="meds.js"></script>
 </body>
