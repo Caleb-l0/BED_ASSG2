@@ -4,17 +4,15 @@ const path = require('path');
 const sql = require('mssql');
 require('dotenv').config();
 
-//Import Validation//
-const {validateSignup} = require('./Middlewares/signupValidation');
-const {validateLogin} = require('./Middlewares/loginValidation');
-
-
-//Import Controller//
+// Import controllers
 const { loginUser } = require('./Controllers/loginController');
 const { signupUser } = require('./Controllers/signupController');
+const medsController = require('./Controllers/medsController');
 
-const medsController = require("./Controllers/medsController");
-const { validateDate, validateDateID } = require("./Middlewares/medsValidation");
+// Import validation middleware
+const { validateLogin } = require('./Middlewares/loginValidation');
+const { validateSignup } = require('./Middlewares/signupValidation');
+const { validateDate, validateDateID } = require('./Middlewares/medsValidation');
 
 
 const app = express();

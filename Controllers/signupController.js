@@ -5,9 +5,13 @@ async function signupUser(req, res) {
   try {
     const { name, email, password } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const existingUser = await signupModel.findUserByEmail(email);
+    if (existingUser) {
+      return res.status(409).json({ error: "User already exists" });
+    }
 
-    const result = await signupModel.CreateUser(name, email, hashedPassword);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await signupModel.createUser(name, email, hashedPassword);
     res.status(201).json({ message: "User created successfully" });
   } catch (err) {
     console.error("Signup error:", err);
