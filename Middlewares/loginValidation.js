@@ -5,17 +5,12 @@ const loginSchema = Joi.object({
   password: Joi.string().required()
 });
 
-function validateLogin(req,res,next){
-    const { error } = loginSchema.validate(req.body);
-    if (error){
-        return res.status(400).json({ error: errorMessage });
-    }
-    next()
+function validateLogin(req, res, next) {
+  const { error } = loginSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details.map(d => d.message).join(', ') });
+  }
+  next();
 }
 
-module.exports = 
-{
-    validateLogin,
-    
-
-}
+module.exports = { validateLogin };
