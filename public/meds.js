@@ -124,8 +124,6 @@ deleteBtn.addEventListener('click', async () => {
   }
 });
 
-cancelBtn.addEventListener('click', () => {
-  modal.classList.add('hidden');
-});
+
 
 fetchMedsFromAPI();
