@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Social - SeniorCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f5fbff;
+      color: #333;
+    }
+
+    #header {
+      margin-bottom: 20px;
+    }
+
+    main {
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .content-section {
+      background-color: white;
+      padding: 30px;
+      margin: 0 auto;
+      border-radius: 20px;
+      max-width: 800px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    }
+
+    .content-section h2 {
+      font-size: 26px;
+      color: #2a6b8f;
+      margin-bottom: 10px;
+    }
+
+    .content-section p {
+      font-size: 18px;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <main>
+    <div class="content-section">
+      <h2>💬 Social Activities</h2>
+      <p>Join discussions, learn something new, or make friends online!</p>
+    </div>
+  </main>
+
+  <script>
+    fetch('header.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('header').innerHTML = data;
+
+        window.showContent = function(section) {
+          switch (section) {
+            case 'home': window.location.href = 'home.html'; break;
+            case 'health': window.location.href = 'meds.html'; break;
+            case 'social': window.location.href = 'social.html'; break;
+            case 'emergency': window.location.href = 'emergency.html'; break;
+            case 'profile': window.location.href = 'profile.html'; break;
+          }
+        };
+
+        document.querySelectorAll('.nav-button').forEach(btn => {
+          btn.addEventListener('click', function () {
+            const section = this.getAttribute('onclick').match(/'(\w+)'/)[1];
+            showContent(section);
+          });
+        });
+      });
+  </script>
+</body>
+</html>
