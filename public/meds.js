@@ -119,7 +119,7 @@ deleteBtn.addEventListener('click', async () => {
       method: "DELETE"
     });
 
-    modal.classList.add('hidden');
+    modal.classList.remove('visible');
     await fetchMedsFromAPI();
   }
 });
