@@ -12,47 +12,8 @@
       color: #333;
     }
 
-    header {
-      background-color: #87ceeb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      flex-wrap: wrap;
-      border-bottom: 4px solid #6aa8c7;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 26px;
-      color: white;
-      font-weight: 500;
-    }
-
-    nav {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .nav-button {
-      padding: 10px 18px;
-      background-color: white;
-      color: #2a6b8f;
-      border: none;
-      border-radius: 30px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .nav-button:hover {
-      background-color: #e0f3ff;
+    #header {
+      margin-bottom: 20px;
     }
 
     main {
@@ -87,73 +48,41 @@
       margin-top: 40px;
       font-size: 14px;
     }
-
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav {
-        justify-content: center;
-        width: 100%;
-      }
-
-      .nav-button {
-        flex: 1 1 100%;
-        justify-content: center;
-      }
-    }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>👵 SeniorCare</h1>
-  <nav>
-    <button class="nav-button" onclick="showContent('home')">🏠 Home</button>
-    <button class="nav-button" onclick="showContent('health')">❤️ Health</button>
-    <button class="nav-button" onclick="showContent('social')">💬 Social</button>
-    <button class="nav-button" onclick="showContent('emergency')">🚨 Emergency</button>    
-    <button class="nav-button" onclick="showContent('profile')">👤 Profile</button>
-  </nav>
-</header>
+  <!-- Load reusable header -->
+  <div id="header"></div>
 
-<main>
-  <div id="content" class="content-section">
-    <h2>Welcome to SeniorCare</h2>
-    <p>Tap a button above to get started 🧭</p>
-  </div>
-</main>
+  <main>
+    <div id="content" class="content-section">
+      <h2>Welcome to SeniorCare</h2>
+      <p>Tap a button above to get started 🧭</p>
+    </div>
+  </main>
 
-<footer>
-  <p>© 2025 SeniorCare. Stay happy and healthy 💙</p>
-</footer>
+  <footer>
+    <p>© 2025 SeniorCare. Stay happy and healthy 💙</p>
+  </footer>
 
-<script>
-  function showContent(section) {
-    var content = document.getElementById('content');
-    switch (section) {
-      case 'home':
-        content.innerHTML = '<h2>🏠 Home</h2><p>Your daily overview will appear here.</p>';
-        break;
-      case 'profile':
-        content.innerHTML = '<h2>👤 Profile</h2><p>Edit your name, contact and preferences here.</p>';
-        break;
-      case 'health':
-        content.innerHTML = '<h2>❤️ Health Tools</h2><p>Track your meds, appointments and vitals.</p>';
-        break;
-      case 'social':
-        content.innerHTML = '<h2>💬 Social</h2><p>Join chats or learn something new with friends.</p>';
-        break;
-      case 'emergency':
-        content.innerHTML = '<h2>🚨 Emergency Info</h2><p>Quick access to important contacts and health info.</p>';
-        break;
-      default:
-        content.innerHTML = '<h2>Welcome</h2><p>Select a feature from the top bar above.</p>';
-    }
-  }
-</script>
+  <script>
+    // Load header.html into the page
+    fetch('header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header').innerHTML = data;
 
+ 
+        // Attach event listeners (in case the HTML was fetched after DOM is ready)
+        document.querySelectorAll('.nav-button').forEach(btn => {
+          btn.addEventListener('click', function () {
+            const section = this.getAttribute('onclick').match(/'(\w+)'/)[1];
+            showContent(section);
+          });
+        });
+      });
+  </script>
 </body>
 </html>
+
