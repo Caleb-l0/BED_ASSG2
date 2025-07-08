@@ -8,8 +8,16 @@
     body {
       font-family: Arial, sans-serif;
       font-size: 18px;
-      padding: 20px;
+      margin: 0;
       background-color: #f9f9f9;
+    }
+
+    #header {
+      margin-bottom: 20px;
+    }
+
+    main {
+      padding: 20px;
     }
 
     h1, h2 {
@@ -87,69 +95,85 @@
       padding: 10px;
       font-size: 16px;
     }
-    #modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  border: 1px solid #ccc;
-  padding: 20px;
-  width: 300px;
-  display: none; 
-}
 
-#modal.visible {
-  display: block; 
-}
+    #modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 1px solid #ccc;
+      padding: 20px;
+      width: 300px;
+      display: none;
+    }
+
+    #modal.visible {
+      display: block;
+    }
+
     .hidden {
-    display: none;
-  }
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Medication Reminder Calendar</h1>
+  <!-- Load header.html -->
+  <div id="header"></div>
 
-  <div id="calendar-controls">
-    <button id="prev-month">← Previous</button>
-    <span id="month-year"></span>
-    <button id="next-month">Next →</button>
-  </div>
+  <main>
+    <h1>Medication Reminder Calendar</h1>
 
-  <div id="calendar-header">
-    <div>Sun</div>
-    <div>Mon</div>
-    <div>Tue</div>
-    <div>Wed</div>
-    <div>Thu</div>
-    <div>Fri</div>
-    <div>Sat</div>
-  </div>
+    <div id="calendar-controls">
+      <button id="prev-month">← Previous</button>
+      <span id="month-year"></span>
+      <button id="next-month">Next →</button>
+    </div>
 
-  <div id="calendar"></div>
+    <div id="calendar-header">
+      <div>Sun</div>
+      <div>Mon</div>
+      <div>Tue</div>
+      <div>Wed</div>
+      <div>Thu</div>
+      <div>Fri</div>
+      <div>Sat</div>
+    </div>
 
-  <h2>Add Medication Reminder</h2>
-  <form id="med-form">
-    <input type="text" id="med-name" placeholder="Medicine name" required />
-    <input type="datetime-local" id="med-datetime" required />
-    <button type="submit">Add Reminder</button>
-  </form>
+    <div id="calendar"></div>
+
+    <h2>Add Medication Reminder</h2>
+    <form id="med-form">
+      <input type="text" id="med-name" placeholder="Medicine name" required />
+      <input type="datetime-local" id="med-datetime" required />
+      <button type="submit">Add Reminder</button>
+    </form>
+  </main>
 
   <div id="modal">
-  <form id="edit-form">
-    <label>Medicine Name:</label><br>
-    <input type="text" id="edit-name" required /><br><br>
+    <form id="edit-form">
+      <label>Medicine Name:</label><br>
+      <input type="text" id="edit-name" required /><br><br>
 
-    <label>Date & Time:</label><br>
-    <input type="datetime-local" id="edit-datetime" required /><br><br>
+      <label>Date & Time:</label><br>
+      <input type="datetime-local" id="edit-datetime" required /><br><br>
 
-    <button type="submit">Save</button>
-    <button type="button" id="delete-btn" style="color: red; margin-left: 10px;">Delete</button>
-   
-  </form>
-</div>
+      <button type="submit">Save</button>
+      <button type="button" id="delete-btn" style="color: red; margin-left: 10px;">Delete</button>
+    </form>
+  </div>
 
+  <!-- Load header dynamically -->
+  <script>
+    fetch('header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header').innerHTML = data;
+      });
+  </script>
+
+  <!-- Your calendar and med logic -->
   <script src="meds.js"></script>
 </body>
 </html>
